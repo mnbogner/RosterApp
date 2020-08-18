@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <data>
+    <variable
+        name="selectionName"
+        type="String" />
+  </data>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <LinearLayout
+    android:id="@+id/selection_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    android:background="@drawable/layout_border"
+    android:layout_margin="2dp">
+
+    <LinearLayout
+        android:id="@+id/edit_ui"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+      <LinearLayout
+          android:id="@+id/edit_ui_left"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:orientation="horizontal"
+          android:gravity="left"
+          android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/edit_ui_points"
+            android:layout_width="65dp"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="5dp"
+            android:gravity="start|center_vertical"
+            android:layout_gravity="start"
+            app:layout_constraintTop_toBottomOf="@id/edit_ui"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="PTS: 999"
+            android:textSize="12dp"
+            />
+
+        <TextView
+            android:id="@+id/edit_ui_power"
+            android:layout_width="65dp"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="5dp"
+            android:gravity="start|center_vertical"
+            android:layout_gravity="start"
+            app:layout_constraintTop_toBottomOf="@id/edit_ui"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="PWR: 999"
+            android:textSize="12dp"
+            />
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:id="@+id/edit_ui_right"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:gravity="right"
+          android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/edit_ui_add_disable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="1dp"
+            android:layout_gravity="right"
+            android:src="@drawable/ic_add_circle_grey_24dp"
+            android:visibility="gone"
+            />
+
+        <ImageView
+            android:id="@+id/edit_ui_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="1dp"
+            android:layout_gravity="right"
+            android:src="@drawable/ic_add_circle_green_24dp"
+            android:visibility="gone"
+            />
+
+        <ImageView
+            android:id="@+id/edit_ui_remove_disable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="1dp"
+            android:layout_gravity="right"
+            android:src="@drawable/ic_remove_circle_grey_24dp"
+            android:visibility="gone"
+            />
+
+        <ImageView
+            android:id="@+id/edit_ui_remove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="1dp"
+            android:layout_gravity="right"
+            android:src="@drawable/ic_remove_circle_red_24dp"
+            android:visibility="gone"
+            />
+        <ImageView
+            android:id="@+id/edit_ui_cancel_disable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="1dp"
+            android:layout_gravity="right"
+            android:src="@drawable/ic_cancel_grey_24dp"
+            android:visibility="gone"
+            />
+
+        <ImageView
+            android:id="@+id/edit_ui_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="1dp"
+            android:layout_gravity="right"
+            android:src="@drawable/ic_cancel_blue_24dp"
+            android:visibility="gone"
+            />
+
+      </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+      android:id="@+id/selection_name"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:padding="5dp"
+      android:gravity="left"
+        app:layout_constraintTop_toBottomOf="@+id/edit_ui"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      android:text="FOO"
+      />
+
+  </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

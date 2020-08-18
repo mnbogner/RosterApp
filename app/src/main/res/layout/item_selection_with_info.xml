@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <data>
+    <variable
+        name="selectionPoints"
+        type="String" />
+    <variable
+        name="selectionPower"
+        type="String" />
+    <variable
+        name="selectionName"
+        type="String" />
+  </data>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <LinearLayout
+    android:id="@+id/selection_item"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+    android:background="@drawable/layout_border"
+    android:layout_margin="2dp">
+
+    <TextView
+        android:id="@+id/selection_points"
+        android:layout_width="65dp"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:gravity="left"
+        android:text="@{`PTS: ` + selectionPoints}"
+        android:textSize="12dp"
+        />
+
+    <TextView
+        android:id="@+id/selection_power"
+        android:layout_width="65dp"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:gravity="left"
+        android:text="@{`PWR: ` + selectionPower}"
+        android:textSize="12dp"
+        />
+
+    <TextView
+      android:id="@+id/selection_name"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:padding="5dp"
+      android:gravity="left"
+        android:text="@{selectionName}"
+        android:textSize="12dp"
+      />
+
+  </LinearLayout>
+
+  <ImageView
+      android:id="@+id/selection_cancel"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:padding="3dp"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      android:src="@drawable/ic_cancel_blue_24dp"
+      android:visibility="gone"
+      />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

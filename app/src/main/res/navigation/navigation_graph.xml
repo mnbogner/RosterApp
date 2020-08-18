@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/selectionFragment">
+    <fragment
+        android:id="@+id/selectionFragment"
+        android:name="com.mnb.rosterapp.presentation.SelectionFragment"
+        android:label="fragment_selection"
+        tools:layout="@layout/fragment_selection" >
+        <action
+            android:id="@+id/action_selectionFragment_to_armySelectFragment"
+            app:destination="@id/armySelectFragment" />
+        <action
+            android:id="@+id/action_selectionFragment_to_codexSelectFragment"
+            app:destination="@id/codexSelectFragment"
+            app:launchSingleTop="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/armyViewFragment"
+        android:name="com.mnb.rosterapp.presentation.ArmyViewFragment"
+        android:label="fragment_army_view"
+        tools:layout="@layout/fragment_army_view" >
+        <action
+            android:id="@+id/action_armyViewFragment_to_unitViewFragment"
+            app:destination="@id/unitViewFragment" />
+        <argument
+            android:name="armyName"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/armyEditFragment"
+        android:name="com.mnb.rosterapp.presentation.ArmyEditFragment"
+        android:label="fragment_army_edit"
+        tools:layout="@layout/fragment_army_edit" >
+        <action
+            android:id="@+id/action_armyEditFragment_to_armyCodexFragment"
+            app:destination="@id/unitSelectFragment"
+            app:launchSingleTop="true" />
+        <action
+            android:id="@+id/action_armyEditFragment_to_unitEditFragment"
+            app:destination="@id/unitEditFragment"
+            app:launchSingleTop="true" />
+        <argument
+            android:name="armyName"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/unitViewFragment"
+        android:name="com.mnb.rosterapp.presentation.UnitViewFragment"
+        android:label="fragment_unit_view"
+        tools:layout="@layout/fragment_unit_view" >
+        <argument
+            android:name="unitName"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/unitEditFragment"
+        android:name="com.mnb.rosterapp.presentation.UnitEditFragment"
+        android:label="fragment_unit_edit"
+        tools:layout="@layout/fragment_unit_edit" >
+        <action
+            android:id="@+id/action_unitEditFragment_to_unitCodexFragment"
+            app:destination="@id/elementSelectFragment"
+            app:launchSingleTop="true" />
+        <argument android:name="unitName"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/unitSelectFragment"
+        android:name="com.mnb.rosterapp.presentation.UnitSelectFragment"
+        android:label="fragment_unit_select"
+        tools:layout="@layout/fragment_unit_select">
+        <argument
+            android:name="armyName"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_unitSelectFragment_to_armyEditFragment"
+            app:destination="@id/armyEditFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/armyEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/elementSelectFragment"
+        android:name="com.mnb.rosterapp.presentation.ElementSelectFragment"
+        android:label="fragment_element_select"
+        tools:layout="@layout/fragment_element_select">
+        <argument
+            android:name="unitName"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_elementSelectFragment_to_unitEditFragment"
+            app:destination="@id/unitEditFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/unitEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/armySelectFragment"
+        android:name="com.mnb.rosterapp.presentation.ArmySelectFragment"
+        android:label="fragment_army_select"
+        tools:layout="@layout/fragment_army_select" >
+        <action
+            android:id="@+id/action_armySelectFragment_to_armyViewFragment"
+            app:destination="@id/armyViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/codexSelectFragment"
+        android:name="com.mnb.rosterapp.presentation.CodexSelectFragment"
+        android:label="fragment_codex_select"
+        tools:layout="@layout/fragment_codex_select" >
+        <action
+            android:id="@+id/action_codexSelectFragment_to_armyEditFragment"
+            app:destination="@id/armyEditFragment"
+            app:launchSingleTop="true" />
+    </fragment>
+</navigation>
