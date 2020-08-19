@@ -51,6 +51,7 @@ class ArmyJsonDataSource : ArmyDataSource {
     }
 
     private fun readJson(fileName: String): Army? {
+        // TODO: split out into json file access class
         val dir = Environment.getExternalStorageDirectory()
         if (dir.exists()) {
             val reader = FileReader(File(dir, fileName + ".json"))
@@ -64,6 +65,7 @@ class ArmyJsonDataSource : ArmyDataSource {
     }
 
     private fun writeJson(army: Army) {
+        // TODO: split out into json file access class
         val dir = Environment.getExternalStorageDirectory()
         if (dir.exists()) {
             val writer = FileWriter(File(dir, army.name + ".json"))

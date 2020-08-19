@@ -214,6 +214,7 @@ class UnitEditFragment : Fragment() {
         return view
     }
 
+    // TODO: move can/can't add/remove logic into unit class or a new rules/validation class
     private fun updateEditUi(view: View, elementName: String, points: Int, power: Int, count: Int, required: Int, limit: Int) {
         if (limit == 1) {
             // limit 1, can't add

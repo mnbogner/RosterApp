@@ -20,6 +20,8 @@ class SelectionFragment : Fragment() {
         const val ORIGIN = "selection_fragment"
     }
 
+    // TODO: split up fuctionality between onCreate and onCreateView (need to do this in all fragments)
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

@@ -39,6 +39,7 @@ class CodexJsonDataSource : CodexDataSource {
     }
 
     private fun readJson(fileName: String): Codex? {
+        // TODO: split out into json file access class
         // currently looking in download directory for shared codexes
         val dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
         if (dir.exists()) {

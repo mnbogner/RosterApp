@@ -16,7 +16,7 @@ class PutUnitInArmy (private val codexRepository: CodexRepository, private val a
                 if (key.endsWith("#" + counter)) {
                     counter++
                 } else {
-                    // fill in gaps in keys
+                    // fill in gaps in existing keys
                     break
                 }
             }

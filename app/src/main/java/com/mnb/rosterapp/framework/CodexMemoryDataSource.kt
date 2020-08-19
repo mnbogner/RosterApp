@@ -40,7 +40,7 @@ class CodexMemoryDataSource : CodexDataSource {
 
     private fun makeCodex(codexName: String): Codex {
 
-        // create codex for testing
+        // create codex in memory for testing
 
         val codexRules = HashMap<String, Rule>()
         codexRules.put("Faction 1", Rule("Faction 1", 0, 0, 0, "faction", "Faction 1 Bonus", 0, 1, "faction"))
