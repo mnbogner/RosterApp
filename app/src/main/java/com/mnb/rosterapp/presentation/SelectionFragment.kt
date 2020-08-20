@@ -22,23 +22,29 @@ class SelectionFragment : Fragment() {
 
     // TODO: split up fuctionality between onCreate and onCreateView (need to do this in all fragments)
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
         stateModel.state.observe(this, Observer {
             // no-op?
+            System.out.println(ORIGIN + " state observer called")
         })
-        val view = inflater.inflate(R.layout.fragment_selection, container, false)
-        if (view != null) {
-            init(view)
-        }
-        return view
     }
 
-    private fun init(view: View) {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_selection, container, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val view = view
+        if (view == null) {
+            return
+        }
+
         view.findViewById<Button>(R.id.button_top_home)?.setOnClickListener {
+            stateModel.handleEvent(Event.SelectionArmySelect())
             val argBundle = bundleOf(Keywords.ORIGIN to ORIGIN)
             Navigation.findNavController(view).navigate(
                 R.id.action_selectionFragment_to_armySelectFragment,
@@ -46,6 +52,7 @@ class SelectionFragment : Fragment() {
             )
         }
         view.findViewById<Button>(R.id.button_bottom_home)?.setOnClickListener {
+            stateModel.handleEvent(Event.SelectionCodexSelect())
             val argBundle = bundleOf(Keywords.ORIGIN to ORIGIN)
             Navigation.findNavController(view).navigate(
                 R.id.action_selectionFragment_to_codexSelectFragment,

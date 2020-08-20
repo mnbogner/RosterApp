@@ -24,69 +24,83 @@ class ArmyEditFragment : Fragment() {
         const val ORIGIN = "army_edit_fragment"
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        stateModel.state.observe(this, Observer {
+            val inflater = activity?.layoutInflater
+            val view = view
+
+            // bail out if inflater/view aren't available (ie: before onCreateView is called)
+            if (inflater == null) {
+                System.out.println(ORIGIN + " state observer called, but inflater is null")
+                return@Observer
+            }
+            if (view == null) {
+                System.out.println(ORIGIN + " state observer called, but view is null")
+                return@Observer
+            }
+
+            System.out.println(ORIGIN + " state observer called, inflater/view ok")
+
+            // TODO: replace with data binding
+            val nameView = view.findViewById(R.id.army_name) as TextView
+            nameView.setText(it.currentArmy!!.name)
+            val addButton = view.findViewById(R.id.add_button) as Button
+            addButton.setOnClickListener {
+                val argBundle = bundleOf(Keywords.ORIGIN to ORIGIN)
+                Navigation.findNavController(view).navigate(
+                    R.id.action_armyEditFragment_to_armyCodexFragment,
+                    argBundle
+                )
+            }
+
+            // build unit list
+            val unitList = it.currentArmy!!.units.values
+            val layout = view.findViewById(R.id.unit_list) as LinearLayout
+            if (unitList != null) {
+                layout.removeAllViews()
+                for (unit in unitList.sortedDescending()) {
+                    val binding = ItemSelectionWithInfoBinding.inflate(inflater)
+                    binding.setSelectionPoints(unit.getPoints().toString())
+                    binding.setSelectionPower(unit.getPoints().toString())
+                    binding.setSelectionName(unit.name)
+                    val clickView = binding.selectionItem
+                    clickView.setOnClickListener {
+                        stateModel.handleEvent(Event.ArmyEditSelectUnit(unit.name))
+                        val argBundle = bundleOf(Keywords.ORIGIN to ORIGIN, Keywords.UNIT_NAME to unit.name)
+                        Navigation.findNavController(view).navigate(
+                            R.id.action_armyEditFragment_to_unitEditFragment,
+                            argBundle
+                        )
+                    }
+                    val cancelView = binding.selectionCancel
+                    System.out.println("RULES? " + unit.type + " / " + Unit.RULES)
+                    if (!unit.type.equals(Unit.RULES)) {
+                        cancelView.visibility = View.VISIBLE
+                        cancelView.setOnClickListener {
+                            stateModel.handleEvent(Event.ArmyEditRemoveUnit(unit.name))
+                        }
+                    }
+                    val itemView = binding.root
+                    layout.addView(itemView)
+                }
+            }
+        })
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_army_edit, container, false)
-        stateModel.state.observe(this, Observer {
-            if (it.originEvent.equals(Event.ARMY_EDIT_INIT)
-                || it.originEvent.equals(Event.ARMY_EDIT_REMOVE_UNIT)
-                || it.originEvent.equals(Event.REFRESH_UI)) {
-                val nameView = view.findViewById(R.id.army_name) as TextView
-                nameView.setText(it.currentArmy!!.name)
-                val addButton = view.findViewById(R.id.add_button) as Button
-                addButton.setOnClickListener {
-                    val argBundle = bundleOf(Keywords.ORIGIN to ORIGIN)
-                    Navigation.findNavController(view).navigate(
-                        R.id.action_armyEditFragment_to_armyCodexFragment,
-                        argBundle
-                    )
-                }
-                val unitList = it.currentArmy!!.units.values
-                if (unitList != null) {
-                    val layout = view.findViewById(R.id.unit_list) as LinearLayout
-                    layout.removeAllViews()
-                    for (unit in unitList.sortedDescending()) {
-                        val binding = ItemSelectionWithInfoBinding.inflate(inflater)
-                        binding.setSelectionPoints(unit.getPoints().toString())
-                        binding.setSelectionPower(unit.getPoints().toString())
-                        binding.setSelectionName(unit.name)
-                        val clickView = binding.selectionItem
-                        clickView.setOnClickListener {
-                            val argBundle = bundleOf(Keywords.ORIGIN to ORIGIN, Keywords.UNIT_NAME to unit.name)
-                            Navigation.findNavController(view).navigate(
-                                R.id.action_armyEditFragment_to_unitEditFragment,
-                                argBundle
-                            )
-                        }
-                        val cancelView = binding.selectionCancel
-                        if (!unit.name.equals(Unit.RULES)) {
-                            cancelView.visibility = View.VISIBLE
-                            cancelView.setOnClickListener{
-                                stateModel.handleEvent(Event.ArmyEditRemoveUnit(unit.name))
-                            }
-                        }
-                        val itemView = binding.root
-                        layout.addView(itemView)
-                    }
-                }
-            }
-        })
-        val origin: String = arguments?.getString(Keywords.ORIGIN, Keywords.NO_ORIGIN) ?: Keywords.NO_ARGUMENTS
-        if (origin.equals(CodexSelectFragment.ORIGIN)) {
-            val codexName: String = arguments?.getString(Keywords.CODEX_NAME, Keywords.NO_CODEX) ?: Keywords.NO_ARGUMENTS
-            if (codexName.equals(Keywords.NO_CODEX)) {
-                val armyName: String = arguments?.getString(Keywords.ARMY_NAME, Keywords.NO_ARMY) ?: Keywords.NO_ARGUMENTS
-                val codexPart = armyName.split("_").get(0)
-                stateModel.handleEvent(Event.ArmyEditInit(codexPart, armyName))
-            } else {
-                stateModel.handleEvent(Event.ArmyEditInit(codexName, null))
-            }
-        } else if (origin.equals(UnitSelectFragment.ORIGIN) || origin.equals(UnitEditFragment.ORIGIN)) {
-            stateModel.handleEvent(Event.RefreshUi())
-        }
-        return view
+        return inflater.inflate(R.layout.fragment_army_edit, container, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        System.out.println(SelectionFragment.ORIGIN + " onResume called, handle event")
+        stateModel.handleEvent(Event.RefreshUi())
     }
 }

@@ -24,17 +24,29 @@ class UnitEditFragment : Fragment() {
         const val ORIGIN = "unit_edit_fragment"
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_unit_edit, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
         stateModel.state.observe(this, Observer {
-            if (it.originEvent.equals(Event.UNIT_EDIT_INIT)
-                || it.originEvent.equals(Event.UNIT_EDIT_ADD_ELEMENT)
-                || it.originEvent.equals(Event.UNIT_EDIT_REMOVE_ELEMENT)
-                || it.originEvent.equals(Event.REFRESH_UI)) {
+            val inflater = activity?.layoutInflater
+            val view = view
+
+            // bail out if inflater/view aren't available (ie: before onCreateView is called)
+            if (inflater == null) {
+                System.out.println(ORIGIN + " state observer called, but inflater is null")
+                return@Observer
+            }
+            if (view == null) {
+                System.out.println(ORIGIN + " state observer called, but view is null")
+                return@Observer
+            }
+
+            System.out.println(ORIGIN + " state observer called, inflater/view ok")
+
+            //if (it.originEvent.equals(Event.UNIT_EDIT_INIT)
+            //    || it.originEvent.equals(Event.UNIT_EDIT_ADD_ELEMENT)
+            //    || it.originEvent.equals(Event.UNIT_EDIT_REMOVE_ELEMENT)
+            //    || it.originEvent.equals(Event.REFRESH_UI)) {
                 val nameView = view.findViewById(R.id.unit_name) as TextView
                 nameView.setText(it.currentUnit!!.name)
                 val addButton = view.findViewById(R.id.unit_button) as Button
@@ -50,12 +62,19 @@ class UnitEditFragment : Fragment() {
                 val modelList = it.currentUnit!!.models.values
                 if (modelList != null && modelList.isNotEmpty()) {
                     // use item with default values as header row
-                    var headerView = inflater.inflate(R.layout.item_model, container, false)
-                    var editLeft = headerView.findViewById(R.id.edit_ui_left) as LinearLayout
-                    editLeft.visibility = View.GONE
-                    var editRight = headerView.findViewById(R.id.edit_ui_right) as LinearLayout
-                    editRight.visibility = View.GONE
-                    modelLayout.addView(headerView)
+
+                    val header = ItemModelBinding.inflate(inflater)
+                    header.editUiLeft.visibility = View.GONE
+                    header.editUiRight.visibility = View.GONE
+                    modelLayout.addView(header.root)
+
+                    //var headerView = inflater.inflate(R.layout.item_model, container, false)
+                    //var editLeft = headerView.findViewById(R.id.edit_ui_left) as LinearLayout
+                    //editLeft.visibility = View.GONE
+                    //var editRight = headerView.findViewById(R.id.edit_ui_right) as LinearLayout
+                    //editRight.visibility = View.GONE
+                    //modelLayout.addView(headerView)
+
                     for (model in modelList) {
                         val binding = ItemModelBinding.inflate(inflater)
                         updateEditUi(binding.root, model.name, model.points, model.power, model.count, model.required, model.limit)
@@ -85,8 +104,13 @@ class UnitEditFragment : Fragment() {
                 val damageList = it.currentUnit!!.damages.values
                 if (damageList != null && damageList.isNotEmpty()) {
                     // use item with default values as header row
-                    val headerView = inflater.inflate(R.layout.item_damage, container, false)
-                    damageLayout.addView(headerView)
+
+                    val header = ItemDamageBinding.inflate(inflater)
+                    damageLayout.addView(header.root)
+
+                    //val headerView = inflater.inflate(R.layout.item_damage, container, false)
+                    //damageLayout.addView(headerView)
+
                     for (damage in damageList) {
                         val binding = ItemDamageBinding.inflate(inflater)
                         binding.damageRemaining = damage.remaining
@@ -109,12 +133,19 @@ class UnitEditFragment : Fragment() {
                 val weaponList = it.currentUnit!!.weapons.values
                 if (weaponList != null && weaponList.isNotEmpty()) {
                     // use item with default values as header row
-                    val headerView = inflater.inflate(R.layout.item_weapon, container, false)
-                    val editLeft = headerView.findViewById(R.id.edit_ui_left) as LinearLayout
-                    editLeft.visibility = View.GONE
-                    val editRight = headerView.findViewById(R.id.edit_ui_right) as LinearLayout
-                    editRight.visibility = View.GONE
-                    weaponLayout.addView(headerView)
+
+                    val header = ItemWeaponBinding.inflate(inflater)
+                    header.editUiLeft.visibility = View.GONE
+                    header.editUiRight.visibility = View.GONE
+                    weaponLayout.addView(header.root)
+
+                    //val headerView = inflater.inflate(R.layout.item_weapon, container, false)
+                    //val editLeft = headerView.findViewById(R.id.edit_ui_left) as LinearLayout
+                    //editLeft.visibility = View.GONE
+                    //val editRight = headerView.findViewById(R.id.edit_ui_right) as LinearLayout
+                    //editRight.visibility = View.GONE
+                    //weaponLayout.addView(headerView)
+
                     for (weapon in weaponList) {
                         val binding = ItemWeaponBinding.inflate(inflater)
                         if (weapon.limit < 1) {
@@ -202,8 +233,16 @@ class UnitEditFragment : Fragment() {
                 } else {
                     ruleLayout.visibility = View.INVISIBLE
                 }
-            }
+            //}
         })
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        /*
         val origin: String = arguments?.getString(Keywords.ORIGIN, Keywords.NO_ORIGIN) ?: Keywords.NO_ARGUMENTS
         if (origin.equals(ArmyEditFragment.ORIGIN)) {
             val unitName: String = arguments?.getString(Keywords.UNIT_NAME, Keywords.NO_UNIT) ?: Keywords.NO_ARGUMENTS
@@ -211,7 +250,15 @@ class UnitEditFragment : Fragment() {
         } else if (origin.equals(ElementSelectFragment.ORIGIN)) {
             stateModel.handleEvent(Event.RefreshUi())
         }
-        return view
+        */
+        return inflater.inflate(R.layout.fragment_unit_edit, container, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        System.out.println(ORIGIN + " onResume called, handle event")
+        stateModel.handleEvent(Event.RefreshUi())
     }
 
     // TODO: move can/can't add/remove logic into unit class or a new rules/validation class

@@ -21,15 +21,28 @@ class ElementSelectFragment : Fragment() {
         const val ORIGIN = "element_select_fragment"
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_element_select, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
         stateModel.state.observe(this, Observer {
-            if (it.originEvent.equals(Event.ELEMENT_SELECT_INIT)) {
+            val inflater = activity?.layoutInflater
+            val view = view
+
+            // bail out if inflater/view aren't available (ie: before onCreateView is called)
+            if (inflater == null) {
+                System.out.println(ORIGIN + " state observer called, but inflater is null")
+                return@Observer
+            }
+            if (view == null) {
+                System.out.println(ORIGIN + " state observer called, but view is null")
+                return@Observer
+            }
+
+            System.out.println(ORIGIN + " state observer called, inflater/view ok")
+
+            //if (it.originEvent.equals(Event.ELEMENT_SELECT_INIT)) {
                 val layout = view.findViewById(R.id.element_list) as LinearLayout
+                layout.removeAllViews()
                 val currentUnit = it.currentUnit
                 val unit = it.availableUnit
                 val modelList = unit!!.models.values
@@ -104,9 +117,22 @@ class ElementSelectFragment : Fragment() {
                         layout.addView(itemView)
                     }
                 }
-            }
+            //}
         })
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_element_select, container, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        System.out.println(ORIGIN + " onResume called, handle event")
         stateModel.handleEvent(Event.ElementSelectInit())
-        return view
     }
 }
