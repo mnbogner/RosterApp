@@ -9,7 +9,7 @@ import kotlinx.coroutines.runBlocking
 class StateViewModel(application: Application, val interactors: Interactors) : AndroidViewModel(application) {
 
     val state = MutableLiveData<State>()
-    val emptyState = State("", null, null, null, null, null, null)
+    val emptyState = State(Event.STATE_INIT, null, null, null, null, null, null)
 
     fun handleEvent(event: Event) {
 
@@ -20,13 +20,12 @@ class StateViewModel(application: Application, val interactors: Interactors) : A
         // replace the debug name if there isn't a better way to fix this
 
         when(event) {
-            is Event.SelectionInit -> {
-                System.out.println("FOO - " + "EVENT SELECTION INIT")
+            is Event.StateInit -> {
+                System.out.println("EVENT - " + Event.STATE_INIT)
                 state.postValue(emptyState)
             }
-
             is Event.SelectionArmySelect -> {
-                System.out.println("FOO - " + "SELECTION ARMY LIST")
+                System.out.println("EVENT - " + Event.SELECTION_ARMY_SELECT)
                 runBlocking {
                     val oldState = state.value ?: emptyState
                     val armyList = interactors.getArmyList.invoke()
@@ -42,8 +41,42 @@ class StateViewModel(application: Application, val interactors: Interactors) : A
                         )
                 }
             }
+            is Event.ArmySelectOpenArmy -> {
+                System.out.println("EVENT - " + Event.ARMY_SELECT_OPEN_ARMY)
+                runBlocking {
+                    val oldState = state.value ?: emptyState
+                    val army = interactors.getArmy.invoke(event.armyName)
+                    state.value = State(
+                        Event.ARMY_SELECT_OPEN_ARMY,
+                        oldState.armyList,
+                        army,
+                        oldState.currentUnit,
+                        oldState.codexList,
+                        oldState.availableCodex,
+                        oldState.availableUnit
+                    )
+                }
+            }
+            is Event.ArmyViewUnitSelect -> {
+                System.out.println("EVENT - " + Event.ARMY_VIEW_UNIT_SELECT)
+                runBlocking {
+                    val oldState = state.value ?: emptyState
+                    // get army name from state
+                    val unit = interactors.getUnitFromArmy.invoke(oldState.currentArmy!!.name, event.unitName)
+                    state.value =
+                        State(
+                            Event.ARMY_VIEW_UNIT_SELECT,
+                            oldState.armyList,
+                            oldState.currentArmy,
+                            unit,
+                            oldState.codexList,
+                            oldState.availableCodex,
+                            oldState.availableUnit
+                        )
+                }
+            }
             is Event.SelectionCodexSelect -> {
-                System.out.println("FOO - " + "SELECTION CODEX LIST")
+                System.out.println("EVENT - " + Event.SELECTION_CODEX_SELECT)
                 runBlocking {
                     val oldState = state.value ?: emptyState
                     val armyList = interactors.getArmyList.invoke()
@@ -60,90 +93,8 @@ class StateViewModel(application: Application, val interactors: Interactors) : A
                         )
                 }
             }
-
-            is Event.ArmySelectInit -> {
-                System.out.println("FOO - " + "ARMY SELECTION INIT")
-                runBlocking {
-                    val oldState = state.value ?: emptyState
-                    val armyList = interactors.getArmyList.invoke()
-                    state.value =
-                        State(
-                            Event.ARMY_SELECT_INIT,
-                            armyList,
-                            oldState.currentArmy,
-                            oldState.currentUnit,
-                            oldState.codexList,
-                            oldState.availableCodex,
-                            oldState.availableUnit
-                        )
-                }
-            }
-            is Event.ArmyViewInit -> {
-                System.out.println("FOO - " + "ARMY VIEW INIT")
-                runBlocking {
-                    val oldState = state.value ?: emptyState
-                    val army = interactors.getArmy.invoke(event.armyName)
-                    state.value =
-                        State(
-                            Event.ARMY_VIEW_INIT,
-                            oldState.armyList,
-                            army,
-                            oldState.currentUnit,
-                            oldState.codexList,
-                            oldState.availableCodex,
-                            oldState.availableUnit
-                        )
-                }
-            }
-            is Event.UnitViewInit -> {
-                System.out.println("FOO - " + "UNIT VIEW INIT")
-                runBlocking {
-                    val oldState = state.value ?: emptyState
-                    // get army name from state
-                    val unit = interactors.getUnitFromArmy.invoke(oldState.currentArmy!!.name, event.unitName)
-                    state.value =
-                        State(
-                            Event.UNIT_VIEW_INIT,
-                            oldState.armyList,
-                            oldState.currentArmy,
-                            unit,
-                            oldState.codexList,
-                            oldState.availableCodex,
-                            oldState.availableUnit
-                        )
-                }
-            }
-            is Event.CodexSelectInit -> {
-                System.out.println("FOO - " + "CODEX SELECTION INIT")
-                runBlocking {
-                    val oldState = state.value ?: emptyState
-                    //val codexList = interactors.getCodexList.invoke()
-                    // load army list too so existing files can be opened
-                    //val armyList = interactors.getArmyList.invoke()
-                    state.value =
-                        State(
-                            Event.CODEX_SELECT_INIT,
-                            oldState.armyList,
-                            oldState.currentArmy,
-                            oldState.currentUnit,
-                            oldState.codexList,
-                            oldState.availableCodex,
-                            oldState.availableUnit
-                            /*
-                            // load lists prior to navigating here
-                            armyList,
-                            oldState.currentArmy,
-                            oldState.currentUnit,
-                            codexList,
-                            oldState.availableCodex,
-                            oldState.availableUnit
-                            */
-                        )
-                }
-            }
-
             is Event.CodexSelectNewArmy -> {
-                System.out.println("FOO - " + "CODEX SELECT NEW ARMY")
+                System.out.println("EVENT - " + Event.CODEX_SELECT_NEW_ARMY)
                 runBlocking {
                     val oldState = state.value ?: emptyState
                     val codex = interactors.getCodex.invoke(event.codexName)
@@ -160,7 +111,7 @@ class StateViewModel(application: Application, val interactors: Interactors) : A
                 }
             }
             is Event.CodexSelectOpenArmy -> {
-                System.out.println("FOO - " + "CODEX SELECT OPEN ARMY")
+                System.out.println("EVENT - " + Event.CODEX_SELECT_OPEN_ARMY)
                 runBlocking {
                     val oldState = state.value ?: emptyState
                     val army = interactors.getArmy.invoke(event.armyName)
@@ -171,7 +122,7 @@ class StateViewModel(application: Application, val interactors: Interactors) : A
                     val codex = interactors.getCodex.invoke(nameParts[0])
 
                     state.value = State(
-                        Event.ARMY_EDIT_INIT,
+                        Event.CODEX_SELECT_OPEN_ARMY,
                         oldState.armyList,
                         army,
                         oldState.currentUnit,
@@ -181,70 +132,8 @@ class StateViewModel(application: Application, val interactors: Interactors) : A
                     )
                 }
             }
-
-
-            is Event.ArmyEditInit -> {
-                System.out.println("FOO - " + "ARMY EDIT INIT")
-                runBlocking {
-                    val oldState = state.value ?: emptyState
-                    state.value = State(
-                        Event.ARMY_EDIT_INIT,
-                        oldState.armyList,
-                        oldState.currentArmy,
-                        oldState.currentUnit,
-                        oldState.codexList,
-                        oldState.availableCodex,
-                        oldState.availableUnit
-                    )
-                    /*
-                    // load lists prior to navigating here
-                    val codex = interactors.getCodex.invoke(event.codexName)
-                    val armyName = event.armyName ?: oldState.currentArmy?.name
-                    if (armyName == null) {
-                        val army = interactors.newArmy.invoke(codex.name)
-                        state.value = State(
-                            Event.ARMY_EDIT_INIT,
-                            oldState.armyList,
-                            army,
-                            oldState.currentUnit,
-                            oldState.codexList,
-                            codex,
-                            oldState.availableUnit
-                        )
-                    } else {
-                        val army = interactors.getArmy.invoke(armyName)
-                        state.value = State(
-                            Event.ARMY_EDIT_INIT,
-                            oldState.armyList,
-                            army,
-                            oldState.currentUnit,
-                            oldState.codexList,
-                            codex,
-                            oldState.availableUnit
-                        )
-                    }
-                    */
-                }
-            }
-            is Event.ArmyEditAddUnit -> {
-                System.out.println("FOO - " + "ARMY EDIT ADD")
-                runBlocking {
-                    val oldState = state.value ?: emptyState
-                    // get codex and army names from state
-                    val army = interactors.putUnitInArmy.invoke(oldState.availableCodex!!.name, oldState.currentArmy!!.name, event.unitName)
-                    state.value = State(
-                        Event.ARMY_EDIT_ADD_UNIT,
-                        oldState.armyList,
-                        army,
-                        oldState.currentUnit,
-                        oldState.codexList,
-                        oldState.availableCodex,
-                        oldState.availableUnit
-                    )
-                }
-            }
             is Event.ArmyEditRemoveUnit -> {
-                System.out.println("FOO - " + "ARMY EDIT REMOVE")
+                System.out.println("EVENT - " + Event.ARMY_EDIT_REMOVE_UNIT)
                 runBlocking {
                     val oldState = state.value ?: emptyState
                     // get army name from state
@@ -260,9 +149,8 @@ class StateViewModel(application: Application, val interactors: Interactors) : A
                         )
                 }
             }
-
             is Event.ArmyEditSelectUnit -> {
-                System.out.println("FOO - " + "ARMY EDIT SELECT")
+                System.out.println("EVENT - " + Event.ARMY_EDIT_SELECT_UNIT)
                 runBlocking {
                     val oldState = state.value ?: emptyState
                     // get army name from state
@@ -282,39 +170,8 @@ class StateViewModel(application: Application, val interactors: Interactors) : A
                     )
                 }
             }
-
-            is Event.UnitSelectInit -> {
-                System.out.println("FOO - " + "UNIT SELECT INIT")
-                runBlocking {
-                    val oldState = state.value ?: emptyState
-                    state.value = State(
-                        Event.UNIT_SELECT_INIT,
-                        oldState.armyList,
-                        oldState.currentArmy,
-                        oldState.currentUnit,
-                        oldState.codexList,
-                        oldState.availableCodex,
-                        oldState.availableUnit
-                    )
-                    // redundant?  we already have the current codex from army edit init
-                    /*
-                    // load unit list prior to navigating here
-                    val codex = interactors.getCodex.invoke(oldState.availableCodex!!.name)
-                    state.value = State(
-                            Event.UNIT_SELECT_INIT,
-                            oldState.armyList,
-                            oldState.currentArmy,
-                            oldState.currentUnit,
-                            oldState.codexList,
-                            codex,
-                            oldState.availableUnit
-                        )
-
-                     */
-                }
-            }
             is Event.UnitSelectAddUnit -> {
-                System.out.println("FOO - " + "UNIT SELECT ADD")
+                System.out.println("EVENT - " + Event.UNIT_SELECT_ADD_UNIT)
                 runBlocking {
                     val oldState = state.value ?: emptyState
                     // get codex and army names from state
@@ -330,41 +187,26 @@ class StateViewModel(application: Application, val interactors: Interactors) : A
                     )
                 }
             }
-            is Event.UnitEditInit -> {
-                System.out.println("FOO - " + "UNIT EDIT INIT")
+            is Event.UnitEditRemoveElement -> {
+                System.out.println("EVENT - " + Event.UNIT_EDIT_REMOVE_ELEMENT)
                 runBlocking {
                     val oldState = state.value ?: emptyState
+                    // get codex and army names from state
+                    val army = interactors.removeElementFromUnit.invoke(oldState.currentArmy!!.name, oldState.currentUnit!!.name, event.elementName)
+                    val armyUnit = interactors.getUnitFromArmy.invoke(oldState.currentArmy!!.name, oldState.currentUnit!!.name)
                     state.value = State(
-                        Event.UNIT_EDIT_INIT,
+                        Event.UNIT_EDIT_REMOVE_ELEMENT,
                         oldState.armyList,
-                        oldState.currentArmy,
-                        oldState.currentUnit,
+                        army,
+                        armyUnit,
                         oldState.codexList,
                         oldState.availableCodex,
                         oldState.availableUnit
                     )
-                    /*
-                    // load unit info prior to navigating here
-                    // get army name from state
-                    val armyUnit = interactors.getUnitFromArmy.invoke(oldState.currentArmy!!.name, event.unitName)
-                    // need to package this logic somewhere
-                    val baseName = armyUnit.name.split("#").get(0)
-                    // get codex name from state
-                    val codexUnit = interactors.getUnitFromCodex.invoke(oldState.availableCodex!!.name, baseName)
-                    state.value = State(
-                            Event.UNIT_EDIT_INIT,
-                            oldState.armyList,
-                            oldState.currentArmy,
-                            armyUnit,
-                            oldState.codexList,
-                            oldState.availableCodex,
-                            codexUnit
-                        )
-                     */
                 }
             }
             is Event.UnitEditAddElement -> {
-                System.out.println("FOO - " + "UNIT EDIT INCREMENT")
+                System.out.println("EVENT - " + Event.UNIT_EDIT_ADD_ELEMENT)
                 runBlocking {
                     val oldState = state.value ?: emptyState
                     // need to package this logic somewhere
@@ -383,55 +225,8 @@ class StateViewModel(application: Application, val interactors: Interactors) : A
                         )
                 }
             }
-            is Event.UnitEditRemoveElement -> {
-                System.out.println("FOO - " + "UNIT EDIT DECREMENT")
-                runBlocking {
-                    val oldState = state.value ?: emptyState
-                    // get codex and army names from state
-                    val army = interactors.removeElementFromUnit.invoke(oldState.currentArmy!!.name, oldState.currentUnit!!.name, event.elementName)
-                    val armyUnit = interactors.getUnitFromArmy.invoke(oldState.currentArmy!!.name, oldState.currentUnit!!.name)
-                    state.value = State(
-                            Event.UNIT_EDIT_REMOVE_ELEMENT,
-                            oldState.armyList,
-                            army,
-                            armyUnit,
-                            oldState.codexList,
-                            oldState.availableCodex,
-                            oldState.availableUnit
-                        )
-                }
-            }
-            is Event.ElementSelectInit -> {
-                System.out.println("FOO - " + "ELEMENT SELECT INIT")
-                runBlocking {
-                    val oldState = state.value ?: emptyState
-                    state.value = State(
-                        Event.ELEMENT_SELECT_INIT,
-                        oldState.armyList,
-                        oldState.currentArmy,
-                        oldState.currentUnit,
-                        oldState.codexList,
-                        oldState.availableCodex,
-                        oldState.availableUnit
-                    )
-                    /*
-                    // load element list prior to navigating here
-                    // redundant?  we already have the current codex unit from unit edit init
-                    val codexUnit = interactors.getUnitFromCodex.invoke(oldState.availableCodex!!.name, oldState.availableUnit!!.name)
-                    state.value = State(
-                            Event.ELEMENT_SELECT_INIT,
-                            oldState.armyList,
-                            oldState.currentArmy,
-                            oldState.currentUnit,
-                            oldState.codexList,
-                            oldState.availableCodex,
-                            codexUnit
-                        )
-                     */
-                }
-            }
             is Event.ElementSelectAddElement -> {
-                System.out.println("FOO - " + "ELEMENT SELECT ADD")
+                System.out.println("EVENT - " + Event.ELEMENT_SELECT_ADD_ELEMENT)
                 runBlocking {
                     val oldState = state.value ?: emptyState
                     // need to package this logic somewhere
@@ -451,9 +246,8 @@ class StateViewModel(application: Application, val interactors: Interactors) : A
                 }
             }
             is Event.RefreshUi -> {
-                // seem to need a "no-op" event to drive the ui without making changes to data
-                // ie: because onCreate is triggered even when returning to a fragment with "back"
-                System.out.println("FOO - " + "REFRESH UI")
+                // a "no-op" event to drive the ui without making changes to data
+                System.out.println("EVENT - " + Event.REFRESH_UI)
                 runBlocking {
                     val oldState = state.value ?: emptyState
                     state.value = State(

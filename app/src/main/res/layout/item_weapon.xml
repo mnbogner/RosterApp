@@ -207,7 +207,7 @@
     app:layout_constraintTop_toBottomOf="@+id/edit_ui"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintWidth_percent=".30"
-    android:text="@{weaponName, default=``}"
+    android:text="@{weaponName ?? ``}"
     android:textSize="10dp"
     />
 
@@ -220,7 +220,7 @@
       app:layout_constraintTop_toBottomOf="@+id/edit_ui"
     app:layout_constraintStart_toEndOf="@id/item_weapon_name"
     app:layout_constraintWidth_percent=".07"
-    android:text="@{weaponRange, default=`R`}"
+    android:text="@{weaponRange ?? `R`}"
     android:textSize="10dp"
     />
 
@@ -233,7 +233,7 @@
       app:layout_constraintTop_toBottomOf="@+id/edit_ui"
     app:layout_constraintStart_toEndOf="@id/item_weapon_range"
     app:layout_constraintWidth_percent=".12"
-    android:text="@{weaponType, default=`TYPE`}"
+    android:text="@{weaponType ?? `TYPE`}"
     android:textSize="10dp"
     />
 
@@ -246,7 +246,7 @@
       app:layout_constraintTop_toBottomOf="@+id/edit_ui"
     app:layout_constraintStart_toEndOf="@id/item_weapon_type"
     app:layout_constraintWidth_percent=".07"
-    android:text="@{weaponStrength, default=`S`}"
+    android:text="@{weaponStrength ?? `S`}"
     android:textSize="10dp"
     />
 
@@ -259,7 +259,7 @@
       app:layout_constraintTop_toBottomOf="@+id/edit_ui"
     app:layout_constraintStart_toEndOf="@id/item_weapon_s"
     app:layout_constraintWidth_percent=".07"
-    android:text="@{weaponPenetration, default=`AP`}"
+    android:text="@{weaponPenetration ?? `AP`}"
     android:textSize="10dp"
     />
 
@@ -272,7 +272,7 @@
       app:layout_constraintTop_toBottomOf="@+id/edit_ui"
     app:layout_constraintStart_toEndOf="@id/item_weapon_ap"
     app:layout_constraintWidth_percent=".07"
-    android:text="@{weaponDamage, default=`D`}"
+    android:text="@{weaponDamage ?? `D`}"
     android:textSize="10dp"
     />
 
@@ -285,7 +285,7 @@
       app:layout_constraintTop_toBottomOf="@+id/edit_ui"
     app:layout_constraintStart_toEndOf="@id/item_weapon_d"
     app:layout_constraintWidth_percent=".30"
-    android:text="@{weaponDescription, default=``}"
+    android:text="@{weaponDescription ?? ``}"
     android:textSize="10dp"
     />
 
@@ -307,7 +307,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintWidth_percent=".30"
-        android:text="@{weaponName2, default=``}"
+        android:text="@{weaponName2 ?? ``}"
         android:textSize="10dp"
         />
 
@@ -320,7 +320,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/item_weapon_name_alt_1"
         app:layout_constraintWidth_percent=".07"
-        android:text="@{weaponRange2, default=`R`}"
+        android:text="@{weaponRange2 ?? `R`}"
         android:textSize="10dp"
         />
 
@@ -333,7 +333,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/item_weapon_range_alt_1"
         app:layout_constraintWidth_percent=".12"
-        android:text="@{weaponType2, default=`TYPE`}"
+        android:text="@{weaponType2 ?? `TYPE`}"
         android:textSize="10dp"
         />
 
@@ -346,7 +346,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/item_weapon_type_alt_1"
         app:layout_constraintWidth_percent=".07"
-        android:text="@{weaponStrength2, default=`S`}"
+        android:text="@{weaponStrength2 ?? `S`}"
         android:textSize="10dp"
         />
 
@@ -359,7 +359,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/item_weapon_s_alt_1"
         app:layout_constraintWidth_percent=".07"
-        android:text="@{weaponPenetration2, default=`AP`}"
+        android:text="@{weaponPenetration2 ?? `AP`}"
         android:textSize="10dp"
         />
 
@@ -372,7 +372,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/item_weapon_ap_alt_1"
         app:layout_constraintWidth_percent=".07"
-        android:text="@{weaponDamage2, default=`D`}"
+        android:text="@{weaponDamage2 ?? `D`}"
         android:textSize="10dp"
         />
 
@@ -385,7 +385,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/item_weapon_d_alt_1"
         app:layout_constraintWidth_percent=".30"
-        android:text="@{weaponDescription2, default=``}"
+        android:text="@{weaponDescription2 ?? ``}"
         android:textSize="10dp"
         />
 
@@ -409,7 +409,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintWidth_percent=".30"
-        android:text="@{weaponName3, default=``}"
+        android:text="@{weaponName3 ?? ``}"
         android:textSize="10dp"
         />
 
@@ -422,7 +422,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/item_weapon_name_alt_2"
         app:layout_constraintWidth_percent=".07"
-        android:text="@{weaponRange3, default=`R`}"
+        android:text="@{weaponRange3 ?? `R`}"
         android:textSize="10dp"
         />
 
@@ -435,7 +435,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/item_weapon_range_alt_2"
         app:layout_constraintWidth_percent=".12"
-        android:text="@{weaponType3, default=`TYPE`}"
+        android:text="@{weaponType3 ?? `TYPE`}"
         android:textSize="10dp"
         />
 
@@ -448,7 +448,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/item_weapon_type_alt_2"
         app:layout_constraintWidth_percent=".07"
-        android:text="@{weaponStrength3, default=`S`}"
+        android:text="@{weaponStrength3 ?? `S`}"
         android:textSize="10dp"
         />
 
@@ -461,7 +461,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/item_weapon_s_alt_2"
         app:layout_constraintWidth_percent=".07"
-        android:text="@{weaponPenetration3, default=`AP`}"
+        android:text="@{weaponPenetration3 ?? `AP`}"
         android:textSize="10dp"
         />
 
@@ -474,7 +474,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/item_weapon_ap_alt_2"
         app:layout_constraintWidth_percent=".07"
-        android:text="@{weaponDamage3, default=`D`}"
+        android:text="@{weaponDamage3 ?? `D`}"
         android:textSize="10dp"
         />
 
@@ -487,7 +487,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/item_weapon_d_alt_2"
         app:layout_constraintWidth_percent=".30"
-        android:text="@{weaponDescription3, default=``}"
+        android:text="@{weaponDescription3 ?? ``}"
         android:textSize="10dp"
         />
 

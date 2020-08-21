@@ -50,7 +50,7 @@
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintWidth_percent=".29"
-    android:text="@{damageRemaining, default=`REMAINING`}"
+    android:text="@{damageRemaining ?? `REMAINING`}"
     android:textSize="10dp"
     />
 
@@ -63,7 +63,7 @@
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintStart_toEndOf="@id/item_damage_remaining"
     app:layout_constraintWidth_percent=".09"
-    android:text="@{damageMove, default=`M`}"
+    android:text="@{damageMove ?? `M`}"
     android:textSize="10dp"
     />
 
@@ -76,7 +76,7 @@
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintStart_toEndOf="@id/item_damage_m"
     app:layout_constraintWidth_percent=".07"
-    android:text="@{damageWeapon, default=`WS`}"
+    android:text="@{damageWeapon ?? `WS`}"
     android:textSize="10dp"
     />
 
@@ -89,7 +89,7 @@
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintStart_toEndOf="@id/item_damage_ws"
     app:layout_constraintWidth_percent=".08"
-    android:text="@{damageBallistic, default=`BS`}"
+    android:text="@{damageBallistic ?? `BS`}"
     android:textSize="10dp"
     />
 
@@ -102,7 +102,7 @@
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintStart_toEndOf="@id/item_damage_bs"
     app:layout_constraintWidth_percent=".06"
-    android:text="@{damageStrength, default=`S`}"
+    android:text="@{damageStrength ?? `S`}"
     android:textSize="10dp"
     />
 
@@ -115,7 +115,7 @@
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintStart_toEndOf="@id/item_damage_s"
     app:layout_constraintWidth_percent=".06"
-    android:text="@{damageToughness, default=`T`}"
+    android:text="@{damageToughness ?? `T`}"
     android:textSize="10dp"
     />
 
@@ -128,7 +128,7 @@
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintStart_toEndOf="@id/item_damage_t"
     app:layout_constraintWidth_percent=".07"
-    android:text="@{damageWounds, default=`W`}"
+    android:text="@{damageWounds ?? `W`}"
     android:textSize="10dp"
     />
 
@@ -141,7 +141,7 @@
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintStart_toEndOf="@id/item_damage_w"
     app:layout_constraintWidth_percent=".07"
-    android:text="@{damageAttacks, default=`A`}"
+    android:text="@{damageAttacks ?? `A`}"
     android:textSize="10dp"
     />
 
@@ -154,7 +154,7 @@
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintStart_toEndOf="@id/item_damage_a"
     app:layout_constraintWidth_percent=".07"
-    android:text="@{damageLeadership, default=`LD`}"
+    android:text="@{damageLeadership ?? `LD`}"
     android:textSize="10dp"
     />
 
@@ -167,7 +167,7 @@
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintStart_toEndOf="@id/item_damage_ld"
     app:layout_constraintWidth_percent=".14"
-    android:text="@{damageSave, default=`SAVE`}"
+    android:text="@{damageSave ?? `SAVE`}"
     android:textSize="10dp"
     />
 

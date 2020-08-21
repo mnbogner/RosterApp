@@ -41,7 +41,6 @@ class UnitSelectFragment : Fragment() {
 
             System.out.println(ORIGIN + " state observer called, inflater/view ok")
 
-            //if (it.originEvent.equals(Event.UNIT_SELECT_INIT)) {
             val unitList = it.availableCodex!!.units.values
             val layout = view.findViewById(R.id.unit_list) as LinearLayout
             if (unitList != null) {
@@ -68,7 +67,6 @@ class UnitSelectFragment : Fragment() {
                     layout.addView(itemView)
                 }
             }
-            //}
         })
     }
 
@@ -84,6 +82,6 @@ class UnitSelectFragment : Fragment() {
         super.onResume()
 
         System.out.println(ORIGIN + " onResume called, handle event")
-        stateModel.handleEvent(Event.UnitSelectInit())
+        stateModel.handleEvent(Event.RefreshUi())
     }
 }

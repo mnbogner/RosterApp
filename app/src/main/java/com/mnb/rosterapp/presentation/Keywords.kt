@@ -12,7 +12,5 @@ class Keywords {
         val NO_ARMY = "no_army"
         val UNIT_NAME = "unit_name"
         val NO_UNIT = "no_unit"
-        val ELEMENT_NAME = "element_name"
-        val NO_ELEMENT = "no_element"
     }
 }

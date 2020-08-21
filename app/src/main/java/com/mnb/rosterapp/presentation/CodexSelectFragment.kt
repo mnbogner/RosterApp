@@ -95,6 +95,6 @@ class CodexSelectFragment : Fragment() {
         super.onResume()
 
         System.out.println(SelectionFragment.ORIGIN + " onResume called, handle event")
-        stateModel.handleEvent(Event.CodexSelectInit())
+        stateModel.handleEvent(Event.RefreshUi())
     }
 }

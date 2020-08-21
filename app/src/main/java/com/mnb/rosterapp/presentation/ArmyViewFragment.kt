@@ -22,40 +22,63 @@ class ArmyViewFragment : Fragment() {
         const val ORIGIN = "army_view_fragment"
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        stateModel.state.observe(this, Observer {
+            val inflater = activity?.layoutInflater
+            val view = view
+
+            // bail out if inflater/view aren't available (ie: before onCreateView is called)
+            if (inflater == null) {
+                System.out.println(ORIGIN + " state observer called, but inflater is null")
+                return@Observer
+            }
+            if (view == null) {
+                System.out.println(ORIGIN + " state observer called, but view is null")
+                return@Observer
+            }
+
+            System.out.println(ORIGIN + " state observer called, inflater/view ok")
+
+            val nameView = view.findViewById(R.id.army_name) as TextView
+            nameView.setText(it.currentArmy!!.name)
+            val unitList = it.currentArmy!!.units.values
+            val layout = view.findViewById(R.id.unit_list) as LinearLayout
+            if (unitList != null) {
+                layout.removeAllViews()
+                for (unit in unitList.sortedDescending()) {
+                    val binding = ItemSelectionWithInfoBinding.inflate(inflater)
+                    binding.setSelectionPoints(unit.getPoints().toString())
+                    binding.setSelectionPower(unit.getPoints().toString())
+                    binding.setSelectionName(unit.name)
+                    val itemView = binding.root
+                    itemView.setOnClickListener {
+                        stateModel.handleEvent(Event.ArmyViewUnitSelect(unit.name))
+                        val argBundle = bundleOf(Keywords.ORIGIN to ORIGIN, Keywords.UNIT_NAME to unit.name)
+                        Navigation.findNavController(view).navigate(
+                            R.id.action_armyViewFragment_to_unitViewFragment,
+                            argBundle
+                        )
+                    }
+                    layout.addView(itemView)
+                }
+            }
+        })
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_army_view, container, false)
-        stateModel.state.observe(this, Observer {
-            if (it.originEvent.equals(Event.ARMY_VIEW_INIT)) {
-                val nameView = view.findViewById(R.id.army_name) as TextView
-                nameView.setText(it.currentArmy!!.name)
-                val unitList = it.currentArmy!!.units.values
-                if (unitList != null) {
-                    val layout = view.findViewById(R.id.unit_list) as LinearLayout
-                    for (unit in unitList.sortedDescending()) {
-                        val binding = ItemSelectionWithInfoBinding.inflate(inflater)
-                        binding.setSelectionPoints(unit.getPoints().toString())
-                        binding.setSelectionPower(unit.getPoints().toString())
-                        binding.setSelectionName(unit.name)
-                        val clickView = binding.selectionItem
-                        clickView.setOnClickListener {
-                            val argBundle = bundleOf(Keywords.ORIGIN to ORIGIN, Keywords.UNIT_NAME to unit.name)
-                            Navigation.findNavController(view).navigate(
-                                R.id.action_armyViewFragment_to_unitViewFragment,
-                                argBundle
-                            )
-                        }
-                        val itemView = binding.root
-                        layout.addView(itemView)
-                    }
-                }
-            }
-        })
-        val armyName: String = arguments?.getString(Keywords.ARMY_NAME, Keywords.NO_ARMY) ?: Keywords.NO_ARGUMENTS
-        stateModel.handleEvent(Event.ArmyViewInit(armyName))
-        return view
+        return inflater.inflate(R.layout.fragment_army_view, container, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        System.out.println(ORIGIN + " onResume called, handle event")
+        stateModel.handleEvent(Event.RefreshUi())
     }
 }
