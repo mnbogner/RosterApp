@@ -51,7 +51,9 @@ class CodexMemoryDataSource : CodexDataSource {
             "rules",
             HashMap<String, Model>(),
             HashMap<Int, Damage>(),
+            ArrayList<String>(),
             HashMap<String, Weapon>(),
+            ArrayList<String>(),
             codexRules
         )
 
@@ -76,7 +78,9 @@ class CodexMemoryDataSource : CodexDataSource {
             "troop",
             infantryModels,
             infantryDamages,
+            ArrayList<String>(),
             infantryWeapons,
+            ArrayList<String>(),
             infantryRules
         )
 
@@ -101,7 +105,9 @@ class CodexMemoryDataSource : CodexDataSource {
             "heavy support",
             vehicleModels,
             vehicleDamages,
+            ArrayList<String>(),
             vehicleWeapons,
+            ArrayList<String>(),
             vehicleRules
         )
 

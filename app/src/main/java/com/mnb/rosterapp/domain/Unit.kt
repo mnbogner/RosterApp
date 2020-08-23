@@ -5,7 +5,9 @@ data class Unit (
     val type: String,  // change to enum?
     val models: MutableMap<String, Model>,
     val damages: MutableMap<Int, Damage>,
+    val weaponKeys: MutableList<String>?,
     val weapons: MutableMap<String, Weapon>,
+    val itemKeys: MutableList<String>?,
     val rules: MutableMap<String, Rule>
 ): Comparable<Unit> {
     constructor(unit: Unit) : this(
@@ -13,14 +15,26 @@ data class Unit (
         unit.type,
         unit.models,
         unit.damages,
+        unit.weaponKeys,
         unit.weapons,
+        unit.itemKeys,
         unit.rules
     )
 
     companion object {
-        // abstract units to hold stuff
-        // TODO: add collections for weapons, psyker stuff, etc.
+        // abstract "units" to hold common elements
+        val RULES_KEY = "Rules"
         val RULES = "rules"
+        val WEAPONS_KEY = "Weapons"
+        val WEAPONS = "weapons"
+        val ITEMS_KEY = "Items"
+        val ITEMS = "items"
+        val POWERS_KEY = "Powers"
+        val POWERS = "powers"
+        val TRAITS_KEY = "Traits"
+        val TRAITS = "traits"
+        val RELICS_KEY = "Relics"
+        val RELICS = "relics"
         // unit types
         val HQ = "hq"
         val TROOPS = "troops"

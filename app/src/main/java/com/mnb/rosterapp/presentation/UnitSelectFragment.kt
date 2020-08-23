@@ -46,8 +46,10 @@ class UnitSelectFragment : Fragment() {
             if (unitList != null) {
                 layout.removeAllViews()
                 for (unit in unitList.sortedDescending()) {
-                    if (unit.type.equals(Unit.RULES)) {
-                        // abstract rules "unit" is added during army creation and can only be edited
+                    if (unit.type.equals(Unit.RULES)
+                        || unit.type.equals(Unit.WEAPONS)
+                        || unit.type.equals(Unit.ITEMS)) {
+                        // abstract collection "units" can't be added
                         continue;
                     }
                     val binding = ItemSelectionWithInfoBinding.inflate(inflater)

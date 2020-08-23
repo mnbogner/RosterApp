@@ -61,6 +61,11 @@ class ArmyEditFragment : Fragment() {
             if (unitList != null) {
                 layout.removeAllViews()
                 for (unit in unitList.sortedDescending()) {
+                    // skip abstract collection "units"
+                    if (unit.type.equals(Unit.WEAPONS)
+                        || unit.type.equals(Unit.ITEMS)) {
+                        continue
+                    }
                     val binding = ItemSelectionWithInfoBinding.inflate(inflater)
                     binding.setSelectionPoints(unit.getPoints().toString())
                     binding.setSelectionPower(unit.getPoints().toString())
