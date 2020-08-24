@@ -3,6 +3,7 @@ package com.mnb.rosterapp.domain
 data class Unit (
     val name: String,
     val type: String,  // change to enum?
+    var warlord: Boolean,
     val models: MutableMap<String, Model>,
     val damages: MutableMap<Int, Damage>,
     val weaponKeys: MutableList<String>?,
@@ -13,6 +14,7 @@ data class Unit (
     constructor(unit: Unit) : this(
         unit.name,
         unit.type,
+        unit.warlord,
         unit.models,
         unit.damages,
         unit.weaponKeys,

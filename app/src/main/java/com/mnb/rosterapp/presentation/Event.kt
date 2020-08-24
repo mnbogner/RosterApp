@@ -12,6 +12,7 @@ sealed class Event {
     data class ArmyEditRemoveUnit(val unitName: String, val eventName: String = ARMY_EDIT_REMOVE_UNIT): Event()
     data class ArmyEditSelectUnit(val unitName: String, val eventName: String = ARMY_EDIT_SELECT_UNIT): Event()
     data class UnitSelectAddUnit(val unitName: String, val eventName: String = UNIT_SELECT_ADD_UNIT): Event()
+    data class UnitEditToggleWarlord(val unitName: String, val eventName: String = UNIT_EDIT_TOGGLE_WARLORD): Event()
     data class UnitEditRemoveElement(val elementName: String, val eventName: String = UNIT_EDIT_REMOVE_ELEMENT): Event()
     data class UnitEditAddElement(val elementName: String, val eventName: String = UNIT_EDIT_ADD_ELEMENT): Event()
     data class ElementSelectAddElement(val elementName: String, val eventName: String = ELEMENT_SELECT_ADD_ELEMENT): Event()
@@ -28,6 +29,7 @@ sealed class Event {
         const val ARMY_EDIT_REMOVE_UNIT = "army_edit_remove_unit"
         const val ARMY_EDIT_SELECT_UNIT = "army_edit_select_unit"
         const val UNIT_SELECT_ADD_UNIT = "unit_select_add_unit"
+        const val UNIT_EDIT_TOGGLE_WARLORD = "unit_edit_toggle_warlord"
         const val UNIT_EDIT_REMOVE_ELEMENT = "unit_edit_remove_element"
         const val UNIT_EDIT_ADD_ELEMENT = "unit_edit_add_element"
         const val ELEMENT_SELECT_ADD_ELEMENT = "element_select_add_element"

@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.mnb.rosterapp.R
 import com.mnb.rosterapp.databinding.*
+import com.mnb.rosterapp.domain.Unit
 
 class UnitEditFragment : Fragment() {
 
@@ -45,6 +46,30 @@ class UnitEditFragment : Fragment() {
 
             val nameView = view.findViewById(R.id.unit_name) as TextView
             nameView.setText(it.currentUnit!!.name)
+
+            if (it.currentUnit.type.equals(Unit.HQ)) {
+
+                val unitName = it.currentUnit!!.name
+
+                if (it.currentUnit.warlord) {
+                    val starViewGrey = view.findViewById(R.id.edit_ui_warlord_disable) as ImageView
+                    starViewGrey.visibility = View.GONE
+                    val starViewYellow = view.findViewById(R.id.edit_ui_warlord) as ImageView
+                    starViewYellow.visibility = View.VISIBLE
+                    starViewYellow.setOnClickListener {
+                        stateModel.handleEvent(Event.UnitEditToggleWarlord(unitName))
+                    }
+                } else {
+                    val starViewYellow = view.findViewById(R.id.edit_ui_warlord) as ImageView
+                    starViewYellow.visibility = View.GONE
+                    val starViewGrey = view.findViewById(R.id.edit_ui_warlord_disable) as ImageView
+                    starViewGrey.visibility = View.VISIBLE
+                    starViewGrey.setOnClickListener {
+                        stateModel.handleEvent(Event.UnitEditToggleWarlord(unitName))
+                    }
+                }
+            }
+
             val addButton = view.findViewById(R.id.unit_button) as Button
             addButton.setOnClickListener {
                 val argBundle = bundleOf(Keywords.ORIGIN to ORIGIN)

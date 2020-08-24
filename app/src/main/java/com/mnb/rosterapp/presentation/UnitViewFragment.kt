@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -44,6 +45,10 @@ class UnitViewFragment : Fragment() {
 
             val nameView = view.findViewById(R.id.unit_name) as TextView
             nameView.setText(it.currentUnit!!.name)
+            if (it.currentUnit.warlord) {
+                val starView = view.findViewById(R.id.warlord) as ImageView
+                starView.visibility = View.VISIBLE
+            }
             val modelList = it.currentUnit!!.models.values
             val modelLayout = view.findViewById(R.id.model_list) as LinearLayout
             if (modelList != null && modelList.isNotEmpty()) {

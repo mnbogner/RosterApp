@@ -63,7 +63,8 @@ class ArmyEditFragment : Fragment() {
                 for (unit in unitList.sortedDescending()) {
                     // skip abstract collection "units"
                     if (unit.type.equals(Unit.WEAPONS)
-                        || unit.type.equals(Unit.ITEMS)) {
+                        || unit.type.equals(Unit.ITEMS)
+                        || unit.type.equals(Unit.TRAITS)) {
                         continue
                     }
                     val binding = ItemSelectionWithInfoBinding.inflate(inflater)

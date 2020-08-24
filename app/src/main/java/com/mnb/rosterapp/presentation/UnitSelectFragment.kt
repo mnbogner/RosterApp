@@ -48,7 +48,8 @@ class UnitSelectFragment : Fragment() {
                 for (unit in unitList.sortedDescending()) {
                     if (unit.type.equals(Unit.RULES)
                         || unit.type.equals(Unit.WEAPONS)
-                        || unit.type.equals(Unit.ITEMS)) {
+                        || unit.type.equals(Unit.ITEMS)
+                        || unit.type.equals(Unit.TRAITS)) {
                         // abstract collection "units" can't be added
                         continue;
                     }

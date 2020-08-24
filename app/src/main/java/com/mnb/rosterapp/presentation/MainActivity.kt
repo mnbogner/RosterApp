@@ -35,7 +35,8 @@ class MainActivity : AppCompatActivity() {
                     PutElementInUnit(codexRepository, armyRepository),
                     PutUnitInArmy(codexRepository, armyRepository),
                     RemoveElementFromUnit(armyRepository),
-                    RemoveUnitFromArmy(armyRepository)
+                    RemoveUnitFromArmy(armyRepository),
+                    ToggleWarlordUnit(codexRepository, armyRepository)
                 )
             )
         ).get(StateViewModel::class.java)

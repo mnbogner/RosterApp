@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.mnb.rosterapp.R
 import com.mnb.rosterapp.databinding.ItemSelectionWithInfoBinding
+import com.mnb.rosterapp.domain.Unit
 
 class ElementSelectFragment : Fragment() {
 
@@ -114,6 +115,33 @@ class ElementSelectFragment : Fragment() {
                     }
                     val itemView = binding.root
                     layout.addView(itemView)
+                }
+            }
+            // if warlord, show traits
+            if (currentUnit!!.warlord) {
+                val traitUnit = it.availableCodex!!.units.get(Unit.TRAITS_KEY)
+                if (traitUnit != null && traitUnit.rules != null && traitUnit.rules.isNotEmpty()) {
+                    for (rule in traitUnit.rules.values) {
+                        if (currentUnit!!.rules.containsKey(rule.name)) {
+                            // skip existing elements
+                            continue
+                        }
+                        val binding = ItemSelectionWithInfoBinding.inflate(inflater)
+                        binding.setSelectionPoints(rule.points.toString())
+                        binding.setSelectionPower(rule.power.toString())
+                        binding.setSelectionName(rule.name)
+                        val clickView = binding.selectionItem
+                        clickView.setOnClickListener {
+                            stateModel.handleEvent(Event.ElementSelectAddElement(rule.name))
+                            val argBundle = bundleOf(Keywords.ORIGIN to ORIGIN)
+                            Navigation.findNavController(view).navigate(
+                                R.id.action_elementSelectFragment_to_unitEditFragment,
+                                argBundle
+                            )
+                        }
+                        val itemView = binding.root
+                        layout.addView(itemView)
+                    }
                 }
             }
         })

@@ -49,6 +49,7 @@ class CodexMemoryDataSource : CodexDataSource {
         val rulesUnit = Unit(
             "Rules",
             "rules",
+            false,
             HashMap<String, Model>(),
             HashMap<Int, Damage>(),
             ArrayList<String>(),
@@ -76,6 +77,7 @@ class CodexMemoryDataSource : CodexDataSource {
         val infantryUnit = Unit(
             "Infantry",
             "troop",
+            false,
             infantryModels,
             infantryDamages,
             ArrayList<String>(),
@@ -103,6 +105,7 @@ class CodexMemoryDataSource : CodexDataSource {
         val vehicleUnit = Unit(
             "Vehicle",
             "heavy support",
+            false,
             vehicleModels,
             vehicleDamages,
             ArrayList<String>(),

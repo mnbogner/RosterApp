@@ -3,6 +3,7 @@ package com.mnb.rosterapp.usecase.interactors
 import com.mnb.rosterapp.data.ArmyRepository
 import com.mnb.rosterapp.data.CodexRepository
 import com.mnb.rosterapp.domain.*
+import com.mnb.rosterapp.domain.Unit
 
 class PutElementInUnit (private val codexRepository: CodexRepository, private val armyRepository: ArmyRepository) {
     suspend operator fun invoke(codexName: String, codexUnitName: String, armyName: String, armyUnitName: String, elementName: String): Army {
@@ -76,7 +77,32 @@ class PutElementInUnit (private val codexRepository: CodexRepository, private va
                 }
             }
         } else {
-            // no-op
+            // check warlord traits for element name
+            val traitsUnit = codex!!.units.get(Unit.TRAITS_KEY)
+            if (traitsUnit!!.rules.containsKey(elementName)) {
+                var rule = armyUnit!!.rules.get(elementName)
+                if (rule == null) {
+                    val traitRule = traitsUnit.rules.get(elementName)
+                    // if there is no minimum number, we are at least adding one
+                    var ruleCount = traitRule!!.required
+                    if (ruleCount < 1) {
+                        ruleCount = 1
+                    }
+                    val ruleCopy = Rule(traitRule)
+                    ruleCopy.count = ruleCount
+                    armyUnit.rules.put(ruleCopy.name, ruleCopy)
+                } else {
+                    if (rule.limit > 0) {
+                        if (rule.count < rule.limit) {
+                            rule.count++
+                        }
+                    } else {
+                        if (rule.count < armyUnit.getModelCount()) {
+                            rule.count++
+                        }
+                    }
+                }
+            }
         }
         return armyRepository.saveArmy(army)
     }

@@ -205,6 +205,24 @@ class StateViewModel(application: Application, val interactors: Interactors) : A
                     )
                 }
             }
+            is Event.UnitEditToggleWarlord -> {
+                System.out.println("EVENT - " + Event.UNIT_EDIT_TOGGLE_WARLORD)
+                runBlocking {
+                    val oldState = state.value ?: emptyState
+                    // get codex and army names from state
+                    val army = interactors.toggleWarlordUnit.invoke(oldState.availableCodex!!.name, oldState.availableUnit!!.name, oldState.currentArmy!!.name, oldState.currentUnit!!.name)
+                    val armyUnit = interactors.getUnitFromArmy.invoke(oldState.currentArmy!!.name, oldState.currentUnit!!.name)
+                    state.value = State(
+                        Event.UNIT_EDIT_REMOVE_ELEMENT,
+                        oldState.armyList,
+                        army,
+                        armyUnit,
+                        oldState.codexList,
+                        oldState.availableCodex,
+                        oldState.availableUnit
+                    )
+                }
+            }
             is Event.UnitEditAddElement -> {
                 System.out.println("EVENT - " + Event.UNIT_EDIT_ADD_ELEMENT)
                 runBlocking {

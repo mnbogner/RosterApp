@@ -13,5 +13,6 @@ data class Interactors(
     val putElementInUnit: PutElementInUnit,
     val putUnitInArmy: PutUnitInArmy,
     val removeElementFromUnit: RemoveElementFromUnit,
-    val removeUnitFromArmy: RemoveUnitFromArmy
+    val removeUnitFromArmy: RemoveUnitFromArmy,
+    val toggleWarlordUnit: ToggleWarlordUnit
 )
