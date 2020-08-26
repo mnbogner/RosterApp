@@ -47,7 +47,7 @@ class PutUnitInArmy (private val codexRepository: CodexRepository, private val a
             }
         }
 
-        val newUnit = Unit(unitName + "#" + counter, codexUnit!!.type, false, HashMap<String, Model>(), codexUnit!!.damages, ArrayList<String>(), HashMap<String, Weapon>(), ArrayList<String>(), HashMap<String, Rule>())
+        val newUnit = Unit(unitName + "#" + counter, codexUnit!!.type, false, codexUnit!!.psyker, HashMap<String, Model>(), codexUnit!!.damages, ArrayList<String>(), HashMap<String, Weapon>(), ArrayList<String>(), HashMap<String, Rule>())
         for (model in codexUnit.models.values) {
             if (model.required > 0) {
                 val modelCopy = Model(model)

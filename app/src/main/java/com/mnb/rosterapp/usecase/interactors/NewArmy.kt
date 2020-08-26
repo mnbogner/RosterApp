@@ -22,7 +22,7 @@ class NewArmy (private val codexRepository: CodexRepository, private val armyRep
         // names are selected from a list and should always be valid
         val codex = codexRepository.loadCodex(codexName)
         val codexUnit = codex!!.units.get("Rules")
-        val rulesUnit = Unit(codexUnit!!.name, codexUnit!!.type, false, HashMap<String, Model>(), HashMap<Int, Damage>(), ArrayList<String>(), HashMap<String, Weapon>(), ArrayList<String>(), HashMap<String, Rule>())
+        val rulesUnit = Unit(codexUnit!!.name, codexUnit!!.type, false, 0, HashMap<String, Model>(), HashMap<Int, Damage>(), ArrayList<String>(), HashMap<String, Weapon>(), ArrayList<String>(), HashMap<String, Rule>())
         for (rule in codexUnit.rules.values) {
             if (rule.required > 0) {
                 val ruleCopy = Rule(rule)

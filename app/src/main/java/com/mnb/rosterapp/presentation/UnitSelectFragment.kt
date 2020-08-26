@@ -46,11 +46,13 @@ class UnitSelectFragment : Fragment() {
             if (unitList != null) {
                 layout.removeAllViews()
                 for (unit in unitList.sortedDescending()) {
+                    // abstract collection "units" can't be added
                     if (unit.type.equals(Unit.RULES)
                         || unit.type.equals(Unit.WEAPONS)
                         || unit.type.equals(Unit.ITEMS)
-                        || unit.type.equals(Unit.TRAITS)) {
-                        // abstract collection "units" can't be added
+                        || unit.type.equals(Unit.TRAITS)
+                        || unit.type.equals(Unit.RELICS)
+                        || unit.type.equals(Unit.POWERS)) {
                         continue;
                     }
                     val binding = ItemSelectionWithInfoBinding.inflate(inflater)

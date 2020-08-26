@@ -215,7 +215,7 @@ class UnitEditFragment : Fragment() {
                         binding.weaponStrength2 = strengths[1]
                         binding.weaponPenetration2 = penetrations[1]
                         binding.weaponDamage2 = damages[1]
-                        binding.weaponDescription2 = descriptions[1]
+                        binding.weaponDescription2 = descriptions[1]  // TODO: currently forced to put a space in for empty descriptions
                     }
                     // handle second alternate profile
                     if (names.size > 2) {

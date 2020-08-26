@@ -4,6 +4,7 @@ data class Unit (
     val name: String,
     val type: String,  // change to enum?
     var warlord: Boolean,
+    val psyker: Int,  // just use an int to double as limit for known powers
     val models: MutableMap<String, Model>,
     val damages: MutableMap<Int, Damage>,
     val weaponKeys: MutableList<String>?,
@@ -15,6 +16,7 @@ data class Unit (
         unit.name,
         unit.type,
         unit.warlord,
+        unit.psyker,
         unit.models,
         unit.damages,
         unit.weaponKeys,
@@ -25,6 +27,8 @@ data class Unit (
 
     companion object {
         // abstract "units" to hold common elements
+        // TODO: collapse all the "special" stuff into one table?
+        // TODO: collapse "key" and "type"?
         val RULES_KEY = "Rules"
         val RULES = "rules"
         val WEAPONS_KEY = "Weapons"
@@ -152,5 +156,18 @@ data class Unit (
             }
         }
         return modelCount
+    }
+
+    // TODO: remove hard-coding
+
+    fun getPsykerCount(): Int {
+        // add up number of psychic powers
+        var psykerCount = 0
+        for (rule in rules.values) {
+            if (rule.type.equals("power")) {
+                psykerCount++
+            }
+        }
+        return psykerCount
     }
 }

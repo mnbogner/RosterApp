@@ -77,30 +77,64 @@ class PutElementInUnit (private val codexRepository: CodexRepository, private va
                 }
             }
         } else {
+
+            // TODO: streamline this part, ie: none of these have a limit > 1
+
+            // TODO: need to fix keys vs. names here and elsewhere
+
             // check warlord traits for element name
             val traitsUnit = codex!!.units.get(Unit.TRAITS_KEY)
-            if (traitsUnit!!.rules.containsKey(elementName)) {
+            if (traitsUnit != null && traitsUnit.rules.containsKey(elementName)) {
                 var rule = armyUnit!!.rules.get(elementName)
                 if (rule == null) {
-                    val traitRule = traitsUnit.rules.get(elementName)
-                    // if there is no minimum number, we are at least adding one
-                    var ruleCount = traitRule!!.required
-                    if (ruleCount < 1) {
-                        ruleCount = 1
-                    }
-                    val ruleCopy = Rule(traitRule)
-                    ruleCopy.count = ruleCount
-                    armyUnit.rules.put(ruleCopy.name, ruleCopy)
+                    // can only have 1 of any trait
+                    val traitRule = traitsUnit.rules.get(elementName)!!
+                    val traitCopy = Rule(traitRule)
+                    traitCopy.count = 1
+                    armyUnit.rules.put(elementName, traitCopy)
                 } else {
-                    if (rule.limit > 0) {
-                        if (rule.count < rule.limit) {
-                            rule.count++
-                        }
-                    } else {
-                        if (rule.count < armyUnit.getModelCount()) {
-                            rule.count++
-                        }
-                    }
+                    // can only have 1 of any trait
+                }
+            }
+
+            // check relics for element name
+            val relicsUnit = codex!!.units.get(Unit.RELICS_KEY)
+            if (relicsUnit != null && relicsUnit.weapons.containsKey(elementName)) {
+                var weapon = armyUnit!!.weapons.get(elementName)
+                if (weapon == null) {
+                    // can only have 1 of any relic
+                    val relicWeapon = relicsUnit.weapons.get(elementName)!!
+                    val relicCopy = Weapon(relicWeapon)
+                    relicCopy.count = 1
+                    armyUnit.weapons.put(elementName, relicCopy)
+                } else {
+                    // can only have 1 of any relic
+                }
+            } else if (relicsUnit!!.rules.containsKey(elementName)) {
+                var rule = armyUnit!!.rules.get(elementName)
+                if (rule == null) {
+                    // can only have 1 of any relic
+                    val relicRule = relicsUnit.rules.get(elementName)!!
+                    val relicCopy = Rule(relicRule)
+                    relicCopy.count = 1
+                    armyUnit.rules.put(elementName, relicCopy)
+                } else {
+                    // can only have 1 of any relic
+                }
+            }
+
+            // check powers for element name
+            val powersUnit = codex!!.units.get(Unit.POWERS_KEY)
+            if (powersUnit != null && powersUnit.rules.containsKey(elementName)) {
+                var rule = armyUnit!!.rules.get(elementName)
+                if (rule == null) {
+                    // can only have 1 of any trait
+                    val powerRule = powersUnit.rules.get(elementName)!!
+                    val powerCopy = Rule(powerRule)
+                    powerCopy.count = 1
+                    armyUnit.rules.put(elementName, powerCopy)
+                } else {
+                    // can only have 1 of any trait
                 }
             }
         }
