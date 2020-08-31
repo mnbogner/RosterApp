@@ -46,15 +46,16 @@ class ElementSelectFragment : Fragment() {
             layout.removeAllViews()
             val currentUnit = it.currentUnit
             val unit = it.availableUnit
-            val modelList = unit!!.models.values
-            val weaponList = unit!!.weapons.values
-            val ruleList = unit!!.rules.values
-            if (modelList != null && modelList.isNotEmpty()) {
+            val modelKeys = unit!!.models.keys
+            val weaponKeys = unit!!.weapons.keys
+            val ruleKeys = unit!!.rules.keys
+            if (modelKeys != null && modelKeys.isNotEmpty()) {
 
                 var headerAdded = false
 
-                for (model in modelList) {
-                    if (currentUnit!!.models.containsKey(model.name)) {
+                for (modelKey in modelKeys) {
+                    val model = unit!!.models.get(modelKey)!!
+                    if (currentUnit!!.models.containsKey(modelKey)) {
                         // skip existing elements
                         continue
                     }
@@ -71,10 +72,10 @@ class ElementSelectFragment : Fragment() {
                     val binding = ItemSelectionWithInfoBinding.inflate(inflater)
                     binding.setSelectionPoints(model.points.toString())
                     binding.setSelectionPower(model.power.toString())
-                    binding.setSelectionName(model.name)
+                    binding.setSelectionName(modelKey)
                     val clickView = binding.selectionItem
                     clickView.setOnClickListener {
-                        stateModel.handleEvent(Event.ElementSelectAddElement(model.name))
+                        stateModel.handleEvent(Event.ElementSelectAddElement(modelKey))
                         val argBundle = bundleOf(Keywords.ORIGIN to ORIGIN)
                         Navigation.findNavController(view).navigate(
                             R.id.action_elementSelectFragment_to_unitEditFragment,
@@ -84,12 +85,13 @@ class ElementSelectFragment : Fragment() {
                     layout.addView(binding.root)
                 }
             }
-            if (weaponList != null && weaponList.isNotEmpty()) {
+            if (weaponKeys != null && weaponKeys.isNotEmpty()) {
 
                 var headerAdded = false
 
-                for (weapon in weaponList) {
-                    if (currentUnit!!.weapons.containsKey(weapon.name)) {
+                for (weaponKey in weaponKeys) {
+                    val weapon = unit!!.weapons.get(weaponKey)!!
+                    if (currentUnit!!.weapons.containsKey(weaponKey)) {
                         // skip existing elements
                         continue
                     }
@@ -106,10 +108,10 @@ class ElementSelectFragment : Fragment() {
                     val binding = ItemSelectionWithInfoBinding.inflate(inflater)
                     binding.setSelectionPoints(weapon.points.toString())
                     binding.setSelectionPower(weapon.power.toString())
-                    binding.setSelectionName(weapon.name)
+                    binding.setSelectionName(weaponKey)
                     val clickView = binding.selectionItem
                     clickView.setOnClickListener {
-                        stateModel.handleEvent(Event.ElementSelectAddElement(weapon.name))
+                        stateModel.handleEvent(Event.ElementSelectAddElement(weaponKey))
                         val argBundle = bundleOf(Keywords.ORIGIN to ORIGIN)
                         Navigation.findNavController(view).navigate(
                             R.id.action_elementSelectFragment_to_unitEditFragment,
@@ -120,12 +122,13 @@ class ElementSelectFragment : Fragment() {
                     layout.addView(itemView)
                 }
             }
-            if (ruleList != null && ruleList.isNotEmpty()) {
+            if (ruleKeys != null && ruleKeys.isNotEmpty()) {
 
                 var headerAdded = false
 
-                for (rule in ruleList) {
-                    if (currentUnit!!.rules.containsKey(rule.name)) {
+                for (ruleKey in ruleKeys) {
+                    val rule = unit!!.rules.get(ruleKey)!!
+                    if (currentUnit!!.rules.containsKey(ruleKey)) {
                         // skip existing elements
                         continue
                     }
@@ -142,10 +145,10 @@ class ElementSelectFragment : Fragment() {
                     val binding = ItemSelectionWithInfoBinding.inflate(inflater)
                     binding.setSelectionPoints(rule.points.toString())
                     binding.setSelectionPower(rule.power.toString())
-                    binding.setSelectionName(rule.name)
+                    binding.setSelectionName(ruleKey)
                     val clickView = binding.selectionItem
                     clickView.setOnClickListener {
-                        stateModel.handleEvent(Event.ElementSelectAddElement(rule.name))
+                        stateModel.handleEvent(Event.ElementSelectAddElement(ruleKey))
                         val argBundle = bundleOf(Keywords.ORIGIN to ORIGIN)
                         Navigation.findNavController(view).navigate(
                             R.id.action_elementSelectFragment_to_unitEditFragment,
@@ -198,7 +201,7 @@ class ElementSelectFragment : Fragment() {
                 }
             }
             // if hq/elite, show relics
-            if (currentUnit!!.type.equals(Unit.HQ) || currentUnit!!.type.equals(Unit.ELITE)) {
+            if (currentUnit!!.type.equals(Unit.HQ) || currentUnit!!.type.equals(Unit.ELITE) || currentUnit!!.type.equals(Unit.ELITE_CHAR)) {
                 val relicUnit = it.availableCodex!!.units.get(Unit.RELICS_KEY)
                 if (relicUnit != null) {
 

@@ -48,25 +48,28 @@ class PutUnitInArmy (private val codexRepository: CodexRepository, private val a
         }
 
         val newUnit = Unit(unitName + "#" + counter, codexUnit!!.type, false, codexUnit!!.psyker, HashMap<String, Model>(), codexUnit!!.damages, ArrayList<String>(), HashMap<String, Weapon>(), ArrayList<String>(), HashMap<String, Rule>())
-        for (model in codexUnit.models.values) {
+        for (modelKey in codexUnit.models.keys) {
+            val model = codexUnit.models.get(modelKey)!!
             if (model.required > 0) {
                 val modelCopy = Model(model)
                 modelCopy.count = model.required
-                newUnit.models.put(modelCopy.name, modelCopy)
+                newUnit.models.put(modelKey, modelCopy)
             }
         }
-        for (weapon in codexUnit.weapons.values) {
+        for (weaponKey in codexUnit.weapons.keys) {
+            val weapon = codexUnit.weapons.get(weaponKey)!!
             if (weapon.required > 0) {
                 val weaponCopy = Weapon(weapon)
                 weaponCopy.count = weapon.required
-                newUnit.weapons.put(weaponCopy.name, weaponCopy)
+                newUnit.weapons.put(weaponKey, weaponCopy)
             }
         }
-        for (rule in codexUnit.rules.values) {
+        for (ruleKey in codexUnit.rules.keys) {
+            val rule = codexUnit.rules.get(ruleKey)!!
             if (rule.required > 0) {
                 val ruleCopy = Rule(rule)
                 ruleCopy.count = rule.required
-                newUnit.rules.put(ruleCopy.name, ruleCopy)
+                newUnit.rules.put(ruleKey, ruleCopy)
             }
         }
         army!!.units.put(newUnit.name, newUnit)

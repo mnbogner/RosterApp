@@ -47,7 +47,7 @@ class UnitEditFragment : Fragment() {
             val nameView = view.findViewById(R.id.unit_name) as TextView
             nameView.setText(it.currentUnit!!.name)
 
-            if (it.currentUnit.type.equals(Unit.HQ)) {
+            if (it.currentUnit.type.equals(Unit.HQ) || it.currentUnit.type.equals(Unit.ELITE_CHAR)) {
 
                 val unitName = it.currentUnit!!.name
 
@@ -80,8 +80,8 @@ class UnitEditFragment : Fragment() {
             }
             val modelLayout = view.findViewById(R.id.model_list) as LinearLayout
             modelLayout.removeAllViews()
-            val modelList = it.currentUnit!!.models.values
-            if (modelList != null && modelList.isNotEmpty()) {
+            val modelKeys = it.currentUnit!!.models.keys
+            if (modelKeys != null && modelKeys.isNotEmpty()) {
                 // use item with default values as header row
                 val header = ItemModelBinding.inflate(inflater)
                 // header.root.setBackgroundResource(R.color.headerAccent)
@@ -89,11 +89,12 @@ class UnitEditFragment : Fragment() {
                 header.editUiRight.visibility = View.GONE
                 modelLayout.addView(header.root)
 
-                for (model in modelList) {
+                for (modelKey in modelKeys) {
+                    val model = it.currentUnit!!.models.get(modelKey)!!
                     val binding = ItemModelBinding.inflate(inflater)
                     updateEditUi(
                         binding.root,
-                        model.name,
+                        modelKey,
                         model.points,
                         model.power,
                         model.count,
@@ -149,8 +150,8 @@ class UnitEditFragment : Fragment() {
             }
             val weaponLayout = view.findViewById(R.id.weapon_list) as LinearLayout
             weaponLayout.removeAllViews()
-            val weaponList = it.currentUnit!!.weapons.values
-            if (weaponList != null && weaponList.isNotEmpty()) {
+            val weaponKeys = it.currentUnit!!.weapons.keys
+            if (weaponKeys != null && weaponKeys.isNotEmpty()) {
                 // use item with default values as header row
                 val header = ItemWeaponBinding.inflate(inflater)
                 // header.root.setBackgroundResource(R.color.headerAccent)
@@ -158,12 +159,13 @@ class UnitEditFragment : Fragment() {
                 header.editUiRight.visibility = View.GONE
                 weaponLayout.addView(header.root)
 
-                for (weapon in weaponList) {
+                for (weaponKey in weaponKeys) {
+                    val weapon = it.currentUnit!!.weapons.get(weaponKey)!!
                     val binding = ItemWeaponBinding.inflate(inflater)
                     if (weapon.limit < 1) {
                         updateEditUi(
                             binding.root,
-                            weapon.name,
+                            weaponKey,
                             weapon.points,
                             weapon.power,
                             weapon.count,
@@ -173,7 +175,7 @@ class UnitEditFragment : Fragment() {
                     } else {
                         updateEditUi(
                             binding.root,
-                            weapon.name,
+                            weaponKey,
                             weapon.points,
                             weapon.power,
                             weapon.count,
@@ -239,14 +241,15 @@ class UnitEditFragment : Fragment() {
             }
             val ruleLayout = view.findViewById(R.id.rule_list) as LinearLayout
             ruleLayout.removeAllViews()
-            val ruleList = it.currentUnit!!.rules.values
-            if (ruleList != null && ruleList.isNotEmpty()) {
-                for (rule in ruleList) {
+            val ruleKeys = it.currentUnit!!.rules.keys
+            if (ruleKeys != null && ruleKeys.isNotEmpty()) {
+                for (ruleKey in ruleKeys) {
+                    val rule = it.currentUnit!!.rules.get(ruleKey)!!
                     val binding = ItemRuleBinding.inflate(inflater)
                     if (rule.limit < 1) {
                         updateEditUi(
                             binding.root,
-                            rule.name,
+                            ruleKey,
                             rule.points,
                             rule.power,
                             rule.count,
@@ -256,7 +259,7 @@ class UnitEditFragment : Fragment() {
                     } else {
                         updateEditUi(
                             binding.root,
-                            rule.name,
+                            ruleKey,
                             rule.points,
                             rule.power,
                             rule.count,

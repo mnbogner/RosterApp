@@ -45,6 +45,7 @@ data class Unit (
         val HQ = "hq"
         val TROOPS = "troops"
         val ELITE = "elite"
+        val ELITE_CHAR = "elite_char"
         val FAST = "fast"
         val HEAVY = "heavy"
         val FLIER = "flier"
@@ -66,6 +67,10 @@ data class Unit (
         } else if (this.type == TROOPS) {
             return 1
         } else if (other.type == TROOPS) {
+            return -1
+        } else if (this.type == ELITE_CHAR) {
+            return 1
+        } else if (other.type == ELITE_CHAR) {
             return -1
         } else if (this.type == ELITE) {
             return 1

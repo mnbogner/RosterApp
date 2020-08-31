@@ -24,7 +24,7 @@ class PutElementInUnit (private val codexRepository: CodexRepository, private va
                 }
                 val modelCopy = Model(codexModel)
                 modelCopy.count = modelCount
-                armyUnit.models.put(modelCopy.name, modelCopy)
+                armyUnit.models.put(elementName, modelCopy)
             } else {
                 if (model.count < model.limit) {
                     model.count++
@@ -41,7 +41,7 @@ class PutElementInUnit (private val codexRepository: CodexRepository, private va
                 }
                 val weaponCopy = Weapon(codexWeapon)
                 weaponCopy.count = weaponCount
-                armyUnit.weapons.put(weaponCopy.name, weaponCopy)
+                armyUnit.weapons.put(elementName, weaponCopy)
             } else {
                 if (weapon.limit > 0) {
                     if (weapon.count < weapon.limit) {
@@ -64,7 +64,7 @@ class PutElementInUnit (private val codexRepository: CodexRepository, private va
                 }
                 val ruleCopy = Rule(codexRule)
                 ruleCopy.count = ruleCount
-                armyUnit.rules.put(ruleCopy.name, ruleCopy)
+                armyUnit.rules.put(elementName, ruleCopy)
             } else {
                 if (rule.limit > 0) {
                     if (rule.count < rule.limit) {
