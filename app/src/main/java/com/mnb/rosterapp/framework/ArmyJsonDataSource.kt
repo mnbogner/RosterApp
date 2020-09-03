@@ -1,19 +1,19 @@
 package com.mnb.rosterapp.framework
 
-import android.os.Environment
+import android.content.Context
 import com.google.gson.Gson
 import com.mnb.rosterapp.data.ArmyDataSource
 import com.mnb.rosterapp.domain.Army
 import com.mnb.rosterapp.domain.Unit
 import java.io.*
 
-class ArmyJsonDataSource : ArmyDataSource {
+class ArmyJsonDataSource(val context: Context) : ArmyDataSource {
 
     private var armyCache: Army? = null
 
     override suspend fun listArmies(): List<String> {
         val armyList = ArrayList<String>()
-        val dir = Environment.getExternalStorageDirectory()
+        val dir = context.getApplicationContext().getFilesDir()
         if (dir.exists()) {
             // get json files
             val fileList = dir.list { dir, file ->
@@ -52,7 +52,7 @@ class ArmyJsonDataSource : ArmyDataSource {
 
     private fun readJson(fileName: String): Army? {
         // TODO: split out into json file access class
-        val dir = Environment.getExternalStorageDirectory()
+        val dir = context.getApplicationContext().getFilesDir()
         if (dir.exists()) {
             val reader = FileReader(File(dir, fileName + ".json"))
             val army = Gson().fromJson(reader, Army::class.java)
@@ -66,7 +66,7 @@ class ArmyJsonDataSource : ArmyDataSource {
 
     private fun writeJson(army: Army) {
         // TODO: split out into json file access class
-        val dir = Environment.getExternalStorageDirectory()
+        val dir = context.getApplicationContext().getFilesDir()
         if (dir.exists()) {
             val writer = FileWriter(File(dir, army.name + ".json"))
             Gson().toJson(army, writer)

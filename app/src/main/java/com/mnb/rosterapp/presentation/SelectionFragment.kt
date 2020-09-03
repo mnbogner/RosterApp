@@ -1,10 +1,14 @@
 package com.mnb.rosterapp.presentation
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -17,6 +21,7 @@ class SelectionFragment : Fragment() {
     private val stateModel by activityViewModels<StateViewModel>()
 
     companion object {
+        const val CODE = 999
         const val ORIGIN = "selection_fragment"
     }
 
@@ -35,6 +40,36 @@ class SelectionFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+
+        when {
+            ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED -> {
+                setupButtons()
+            }
+            else -> {
+                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), CODE)
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when (requestCode) {
+            CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    setupButtons()
+                } else {
+                    Toast.makeText(requireContext(), "app must have permission to read files", Toast.LENGTH_LONG).show()
+                }
+            }
+            else -> {
+                // ignore
+            }
+        }
+
+    }
+
+    fun setupButtons() {
 
         val view = view
         if (view == null) {

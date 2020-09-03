@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         // val codexRepository = CodexRepository(CodexMemoryDataSource())
         // val armyRepository = ArmyRepository(ArmyMemoryDataSource())
         val codexRepository = CodexRepository(CodexJsonDataSource())
-        val armyRepository = ArmyRepository(ArmyJsonDataSource())
+        val armyRepository = ArmyRepository(ArmyJsonDataSource(this))
         stateModel = ViewModelProvider( this,
             StateViewModelFactory(application,
                 Interactors(

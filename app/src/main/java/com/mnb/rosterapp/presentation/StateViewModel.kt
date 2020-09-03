@@ -1,8 +1,10 @@
 package com.mnb.rosterapp.presentation
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.mnb.rosterapp.domain.Army
 import com.mnb.rosterapp.usecase.Interactors
 import kotlinx.coroutines.runBlocking
 
@@ -98,7 +100,13 @@ class StateViewModel(application: Application, val interactors: Interactors) : A
                 runBlocking {
                     val oldState = state.value ?: emptyState
                     val codex = interactors.getCodex.invoke(event.codexName)
-                    val army = interactors.newArmy.invoke(codex.name)
+                    var army: Army? = null
+                    // invalid codex may have no name
+                    if (codex.name.isNullOrBlank()) {
+                        Toast.makeText(getApplication(), "codex file format is not valid", Toast.LENGTH_LONG).show()
+                    } else {
+                        army = interactors.newArmy.invoke(codex.name)
+                    }
                     state.value = State(
                         Event.CODEX_SELECT_NEW_ARMY,
                         oldState.armyList,

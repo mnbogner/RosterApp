@@ -45,14 +45,21 @@ class ArmyEditFragment : Fragment() {
 
             // TODO: replace with data binding
             val nameView = view.findViewById(R.id.army_name) as TextView
-            nameView.setText(it.currentArmy!!.name)
             val addButton = view.findViewById(R.id.add_button) as Button
-            addButton.setOnClickListener {
-                val argBundle = bundleOf(Keywords.ORIGIN to ORIGIN)
-                Navigation.findNavController(view).navigate(
-                    R.id.action_armyEditFragment_to_armyCodexFragment,
-                    argBundle
-                )
+            if (it.currentArmy == null) {
+                // no army to edit (codex probably invalid)
+                nameView.setText("")
+                addButton.visibility = View.GONE
+                return@Observer
+            } else {
+                nameView.setText(it.currentArmy!!.name)
+                addButton.setOnClickListener {
+                    val argBundle = bundleOf(Keywords.ORIGIN to ORIGIN)
+                    Navigation.findNavController(view).navigate(
+                        R.id.action_armyEditFragment_to_armyCodexFragment,
+                        argBundle
+                    )
+                }
             }
 
             // build unit list
